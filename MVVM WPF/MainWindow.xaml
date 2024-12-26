@@ -22,8 +22,6 @@
                 ItemsSource="{Binding Items}"
                 SelectedItem="{Binding SelectedItem}"
                 AutoGenerateColumns="False"
-                CanUserAddRows="False"
-                CanUserDeleteRows="False"
                 Background="#C8CFFE">
                 <DataGrid.Columns>
                     <DataGridTextColumn 
@@ -103,7 +101,7 @@
 
                 <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
                     <Button Content="Add" 
-                            Command="{Binding AddCommand}"
+                            Command="{Binding AddItemCommand}"
                             Margin="5"
                             Padding="5"
                             FontSize="10"
@@ -112,7 +110,7 @@
                             BorderThickness="2"/>
 
                     <Button Content="Delete" 
-                            Command="{Binding DeleteCommand}"
+                            Command="{Binding DeleteItemCommand}"
                             Margin="5"
                             Padding="5"
                             FontSize="10"
@@ -121,7 +119,7 @@
                             BorderThickness="2"/>
                     
                     <Button Content="Update" 
-                            Command="{Binding UpdateCommand}"
+                            Command="{Binding UpdateItemCommand}"
                             Margin="5"
                             Padding="5"
                             FontSize="10"

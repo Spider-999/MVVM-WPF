@@ -2,6 +2,7 @@
 using MVVM_WPF.MVVM;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 
 namespace MVVM_WPF.ViewModels
 {
@@ -9,7 +10,13 @@ namespace MVVM_WPF.ViewModels
     {
         #region Properties
         private ObservableCollection<Item> _items;
-		private Item? _item;
+		private Item _item;
+        #endregion
+
+        #region Relay commands
+        private RelayCommand? _addItemCommand => new RelayCommand(execute => AddItem());
+        private RelayCommand? _deleteItemCommand => new RelayCommand(execute => DeleteItem(), canExecute => IsItemSelected());
+        private RelayCommand? _updateItemCommand => new RelayCommand(execute => UpdateItem(), canExecute => IsItemSelected());  
         #endregion
 
         #region Getters & setters
@@ -28,14 +35,53 @@ namespace MVVM_WPF.ViewModels
                 OnPropertyChanged();
             }
 		}
+
+        public RelayCommand? AddItemCommand
+        {
+            get => _addItemCommand;
+        }
+
+        public RelayCommand? DeleteItemCommand
+        {
+            get => _deleteItemCommand;
+        }
+
+        public RelayCommand? UpdateItemCommand
+        {
+            get => _updateItemCommand;
+        }
         #endregion
 
         #region Constructor
         public MainWindowViewModel()
         {
             _items = new ObservableCollection<Item>();
-            _items.Add(new Item { ID = "1", Name = "Item 1", Quantity = 10 });
-            _items.Add(new Item { ID = "2", Name = "Item 2", Quantity = 5 });
+        }
+        #endregion
+
+        #region Command methods
+        public void AddItem()
+        {
+            _items.Add(new Item { Name="NONE", ID="-1", Quantity=-1});
+        }
+
+        public void DeleteItem()
+        {
+            _items.Remove(SelectedItem);
+        }
+
+        public void UpdateItem()
+        {
+            _item.Name = "UPDATED";
+            _item.ID = "UPDATED";
+            _item.Quantity = 0;
+        }
+        #endregion
+
+        #region Utility methods
+        public bool IsItemSelected()
+        {
+            return _item != null;
         }
         #endregion
     }
