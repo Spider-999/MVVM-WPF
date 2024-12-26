@@ -9,7 +9,7 @@ namespace MVVM_WPF.ViewModels
     {
         #region Properties
         private ObservableCollection<Item> _items;
-		private Item _item;
+		private Item? _item;
         #endregion
 
         #region Getters & setters

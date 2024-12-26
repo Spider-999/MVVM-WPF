@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MVVM_WPF"
         mc:Ignorable="d"
+        Background="#1E214C"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -13,7 +14,6 @@
         </Grid.ColumnDefinitions>
 
         <Border BorderBrush="Black"
-                Background="#C8CFFE"
                 CornerRadius="3"
                 BorderThickness="3"
                 Margin="8"
@@ -21,9 +21,25 @@
             <DataGrid
                 ItemsSource="{Binding Items}"
                 SelectedItem="{Binding SelectedItem}"
+                AutoGenerateColumns="False"
                 CanUserAddRows="False"
-                CanUserDeleteRows="False">
-                
+                CanUserDeleteRows="False"
+                Background="#C8CFFE">
+                <DataGrid.Columns>
+                    <DataGridTextColumn 
+                        Header="ID" 
+                        Binding="{Binding ID}"
+                        Width="*"
+                        FontWeight="Bold"/> 
+                    <DataGridTextColumn 
+                        Header="Name" 
+                        Binding="{Binding Name}"
+                        Width="2*"/>
+                    <DataGridTextColumn 
+                        Header="Quantity" 
+                        Binding="{Binding Quantity}"
+                        Width="2*"/>
+                </DataGrid.Columns>
             </DataGrid>
         </Border>
 
@@ -43,7 +59,8 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="8*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="7*"/>
                 </Grid.RowDefinitions>
 
 
@@ -54,7 +71,7 @@
                        FontSize="12"
                        FontFamily="Verdana"
                        FontWeight="Bold"/>
-                
+
                 <TextBox Height="20" Grid.Row="0" Grid.Column="1"
                          Margin="5,0,5,0" 
                          BorderThickness="2"
@@ -83,6 +100,35 @@
                          Margin="5,0,5,0"
                          BorderThickness="2"
                          Text="{Binding SelectedItem.Quantity, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
+                    <Button Content="Add" 
+                            Command="{Binding AddCommand}"
+                            Margin="5"
+                            Padding="5"
+                            FontSize="10"
+                            FontFamily="Verdana"
+                            FontWeight="Bold"
+                            BorderThickness="2"/>
+
+                    <Button Content="Delete" 
+                            Command="{Binding DeleteCommand}"
+                            Margin="5"
+                            Padding="5"
+                            FontSize="10"
+                            FontFamily="Verdana"
+                            FontWeight="Bold"
+                            BorderThickness="2"/>
+                    
+                    <Button Content="Update" 
+                            Command="{Binding UpdateCommand}"
+                            Margin="5"
+                            Padding="5"
+                            FontSize="10"
+                            FontFamily="Verdana"
+                            FontWeight="Bold"
+                            BorderThickness="2"/> 
+                </StackPanel>
             </Grid>
         </Border>
     </Grid>
