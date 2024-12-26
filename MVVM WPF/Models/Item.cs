@@ -9,20 +9,20 @@
         #endregion
 
         #region Getters & setters
-        public string Id
+        public string ID
         {
-            get { return _id; }
-            set { _id = value; }
+            get => _id;
+            set => _id = value;
         }
         public string Name
         {
-            get { return _name; }
-            set { _name = value; }
+            get => _name;
+            set => _name = value;
         }
         public int Quantity
         {
-            get { return _quantity; }
-            set { _quantity = value; }
+            get => _quantity;
+            set => _quantity = value;
         }
         #endregion
     }

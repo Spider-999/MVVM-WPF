@@ -12,6 +12,20 @@
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
 
+        <Border BorderBrush="Black"
+                Background="#C8CFFE"
+                CornerRadius="3"
+                BorderThickness="3"
+                Margin="8"
+                Grid.Column="0">
+            <DataGrid
+                ItemsSource="{Binding Items}"
+                SelectedItem="{Binding SelectedItem}"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False">
+                
+            </DataGrid>
+        </Border>
 
         <Border BorderBrush="Black"
                 Background="#C8CFFE"
@@ -32,17 +46,19 @@
                     <RowDefinition Height="8*"/>
                 </Grid.RowDefinitions>
 
-                
+
                 <Label Grid.Row="0" Grid.Column="0" 
                        Content="Name" 
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
-                       FontSize="14"
+                       FontSize="12"
                        FontFamily="Verdana"
                        FontWeight="Bold"/>
+                
                 <TextBox Height="20" Grid.Row="0" Grid.Column="1"
                          Margin="5,0,5,0" 
-                         BorderThickness="2"/>
+                         BorderThickness="2"
+                         Text="{Binding SelectedItem.Name, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Grid.Row="1" Grid.Column="0" 
                        Content="ID"
@@ -53,7 +69,8 @@
                        FontWeight="Bold"/>
                 <TextBox Height="20" Grid.Row="1" Grid.Column="1"
                          Margin="5,0,5,0"
-                         BorderThickness="2"/>
+                         BorderThickness="2"
+                         Text="{Binding SelectedItem.ID, UpdateSourceTrigger=PropertyChanged}"/>
 
                 <Label Grid.Row="2" Grid.Column="0" 
                        Content="Quantity"
@@ -64,7 +81,8 @@
                        FontWeight="Bold"/>
                 <TextBox Height="20" Grid.Row="2" Grid.Column="1"
                          Margin="5,0,5,0"
-                         BorderThickness="2"/>
+                         BorderThickness="2"
+                         Text="{Binding SelectedItem.Quantity, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </Border>
     </Grid>
