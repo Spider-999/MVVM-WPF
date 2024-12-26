@@ -10,7 +10,10 @@ namespace MVVM_WPF.ViewModels
     {
         #region Properties
         private ObservableCollection<Item> _items;
-		private Item _item;
+		private Item _selectedItem;
+        private string _tbName;
+        private string _tbID;
+        private int _tbQuantity;
         #endregion
 
         #region Relay commands
@@ -28,13 +31,42 @@ namespace MVVM_WPF.ViewModels
 
         public Item SelectedItem
 		{
-			get => _item;
+			get => _selectedItem;
             set
             {
-                _item = value;
+                _selectedItem = value;
                 OnPropertyChanged();
             }
 		}
+        public string TbName
+        {
+            get => _tbName;
+            set
+            {
+                _tbName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TbID
+        {
+            get => _tbID;
+            set
+            {
+                _tbID = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int TbQuantity
+        {
+            get => _tbQuantity;
+            set
+            {
+                _tbQuantity = value;
+                OnPropertyChanged();
+            }
+        }
 
         public RelayCommand? AddItemCommand
         {
@@ -56,13 +88,24 @@ namespace MVVM_WPF.ViewModels
         public MainWindowViewModel()
         {
             _items = new ObservableCollection<Item>();
+
         }
         #endregion
 
         #region Command methods
         public void AddItem()
         {
-            _items.Add(new Item { Name="NONE", ID="-1", Quantity=-1});
+            if (CheckTextBoxes())
+            {
+                Item itemToAdd = new Item { Name = TbName, ID = TbID, Quantity = TbQuantity };
+
+                if (itemToAdd != null)
+                    _items.Add(itemToAdd);
+            }
+            else
+                InvalidTextBoxMessages();
+
+            ClearTextBoxes();
         }
 
         public void DeleteItem()
@@ -72,16 +115,52 @@ namespace MVVM_WPF.ViewModels
 
         public void UpdateItem()
         {
-            _item.Name = "UPDATED";
-            _item.ID = "UPDATED";
-            _item.Quantity = 0;
+            if (CheckTextBoxes())
+            {
+                _selectedItem.Name = TbName;
+                _selectedItem.ID = TbID;
+                _selectedItem.Quantity = TbQuantity;
+
+                var index = _items.IndexOf(_selectedItem);
+                if (index >= 0)
+                {
+                    _items.RemoveAt(index);
+                    _items.Insert(index, _selectedItem);
+                }
+            }
+            else
+                InvalidTextBoxMessages();
+
+            ClearTextBoxes();
         }
         #endregion
 
         #region Utility methods
         public bool IsItemSelected()
         {
-            return _item != null;
+            return SelectedItem != null;
+        }
+
+        public bool CheckTextBoxes()
+        {
+            return !string.IsNullOrEmpty(TbName) && !string.IsNullOrEmpty(TbID) && TbQuantity > 0;
+        }
+
+        public void InvalidTextBoxMessages()
+        {
+            if (string.IsNullOrEmpty(TbName))
+                MessageBox.Show("Name is empty");
+            else if (string.IsNullOrEmpty(TbID))
+                MessageBox.Show("ID is empty");
+            else if (TbQuantity <= 0)
+                MessageBox.Show("Quantity is less than 1");
+        }
+
+        public void ClearTextBoxes()
+        {
+            TbName = "";
+            TbID = "";
+            TbQuantity = 0;
         }
         #endregion
     }
