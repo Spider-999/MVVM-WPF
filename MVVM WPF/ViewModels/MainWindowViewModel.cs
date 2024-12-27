@@ -22,7 +22,8 @@ namespace MVVM_WPF.ViewModels
         // Can only delete if an item is selected
         private RelayCommand? _deleteItemCommand => new RelayCommand(execute => DeleteItem(), canExecute => IsItemSelected());
         // Can only save if there are items in the collection
-        private RelayCommand? _saveItemsCommand => new RelayCommand(execute => SaveItems(), canExecute => _items.Count() > 0);  
+        private RelayCommand? _saveItemsCommand => new RelayCommand(execute => SaveItems(), canExecute => _items.Count() > 0); 
+        private RelayCommand? _loadItemsCommand => new RelayCommand(execute => LoadItems());
         #endregion
 
         #region Getters & setters
@@ -85,6 +86,11 @@ namespace MVVM_WPF.ViewModels
         {
             get => _saveItemsCommand;
         }
+
+        public RelayCommand? LoadItemsCommand
+        {
+            get => _loadItemsCommand;
+        }
         #endregion
 
         #region Constructor
@@ -135,13 +141,41 @@ namespace MVVM_WPF.ViewModels
                         {
                             writer.WriteLine(item.Name + " " + item.ID + " " + item.Quantity);
                         }
+                        MessageBox.Show("Items saved");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Load the items from a text file
+        /// </summary>
+        public void LoadItems()
+        {
+            string workingDirectory = Environment.CurrentDirectory;
+            if (workingDirectory != null)
+            {
+                string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+                if (projectDirectory != null)
+                {
+                    string filePath = Path.Combine(projectDirectory, "Items.txt");
+                    using (StreamReader reader = new StreamReader(filePath))
+                    {
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            string[] itemData = line.Split(' ');
+                            Item item = new Item { Name = itemData[0], ID = itemData[1], Quantity = int.Parse(itemData[2]) };
+                            _items.Add(item);
+                        }
+                        MessageBox.Show("Items loaded");
                     }
                 }
             }
         }
         #endregion
 
-        #region Utility methods
+            #region Utility methods
         public bool IsItemSelected()
         {
             return SelectedItem != null;

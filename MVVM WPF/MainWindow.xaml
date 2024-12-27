@@ -130,7 +130,16 @@
                             FontSize="10"
                             FontFamily="Verdana"
                             FontWeight="Bold"
-                            BorderThickness="2"/> 
+                            BorderThickness="2"/>
+
+                    <Button Content="Load" 
+                            Command="{Binding LoadItemsCommand}"
+                            Margin="5"
+                            Padding="5"
+                            FontSize="10"
+                            FontFamily="Verdana"
+                            FontWeight="Bold"
+                            BorderThickness="2"/>
                 </StackPanel>
             </Grid>
         </Border>
