@@ -123,8 +123,8 @@
                             FontWeight="Bold"
                             BorderThickness="2"/>
                     
-                    <Button Content="Update" 
-                            Command="{Binding UpdateItemCommand}"
+                    <Button Content="Save" 
+                            Command="{Binding SaveItemsCommand}"
                             Margin="5"
                             Padding="5"
                             FontSize="10"

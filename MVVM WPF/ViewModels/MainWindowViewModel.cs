@@ -2,13 +2,14 @@
 using MVVM_WPF.MVVM;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 
 namespace MVVM_WPF.ViewModels
 {
     internal class MainWindowViewModel : ViewModelBase
     {
-        #region Properties
+        #region Private properties
         private ObservableCollection<Item> _items;
 		private Item _selectedItem;
         private string _tbName;
@@ -18,8 +19,10 @@ namespace MVVM_WPF.ViewModels
 
         #region Relay commands
         private RelayCommand? _addItemCommand => new RelayCommand(execute => AddItem());
+        // Can only delete if an item is selected
         private RelayCommand? _deleteItemCommand => new RelayCommand(execute => DeleteItem(), canExecute => IsItemSelected());
-        private RelayCommand? _updateItemCommand => new RelayCommand(execute => UpdateItem(), canExecute => IsItemSelected());  
+        // Can only save if there are items in the collection
+        private RelayCommand? _saveItemsCommand => new RelayCommand(execute => SaveItems(), canExecute => _items.Count() > 0);  
         #endregion
 
         #region Getters & setters
@@ -78,9 +81,9 @@ namespace MVVM_WPF.ViewModels
             get => _deleteItemCommand;
         }
 
-        public RelayCommand? UpdateItemCommand
+        public RelayCommand? SaveItemsCommand
         {
-            get => _updateItemCommand;
+            get => _saveItemsCommand;
         }
         #endregion
 
@@ -113,25 +116,28 @@ namespace MVVM_WPF.ViewModels
             _items.Remove(SelectedItem);
         }
 
-        public void UpdateItem()
-        {
-            if (CheckTextBoxes())
-            {
-                _selectedItem.Name = TbName;
-                _selectedItem.ID = TbID;
-                _selectedItem.Quantity = TbQuantity;
 
-                var index = _items.IndexOf(_selectedItem);
-                if (index >= 0)
+        /// <summary>
+        /// Save the items to a text file
+        /// </summary>
+        public void SaveItems()
+        {
+            string workingDirectory = Environment.CurrentDirectory;
+            if (workingDirectory != null)
+            {
+                string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+                if (projectDirectory != null)
                 {
-                    _items.RemoveAt(index);
-                    _items.Insert(index, _selectedItem);
+                    string filePath = Path.Combine(projectDirectory, "Items.txt");
+                    using (StreamWriter writer = new StreamWriter(filePath))
+                    {
+                        foreach (Item item in _items)
+                        {
+                            writer.WriteLine(item.Name + " " + item.ID + " " + item.Quantity);
+                        }
+                    }
                 }
             }
-            else
-                InvalidTextBoxMessages();
-
-            ClearTextBoxes();
         }
         #endregion
 
